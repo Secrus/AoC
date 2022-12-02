@@ -1,6 +1,4 @@
-
-
-shape_to_score_map ={
+shape_to_score_map = {
     "A": 1,
     "X": 1,
     "B": 2,
@@ -14,6 +12,7 @@ SCISSORS = 3
 DRAW = 3
 WIN = 6
 
+
 def get_data(path: str = "./input.txt") -> list[str]:
     with open(path, "r") as data_file:
         return list(map(lambda s: s.strip(), data_file.readlines()))
@@ -24,74 +23,50 @@ def normalize_data(data: list[str]) -> list[tuple[int, int]]:
     return [(shape_to_score_map[o], shape_to_score_map[m]) for o, m in tupled]
 
 
-def calc_score_part1(data: list[tuple[int, int]]) -> int:
-    score = 0
+def calc_scores(data: list[tuple[int, int]]) -> tuple[int, int]:
+    score_1 = 0
+    score_2 = 0
     for o, m in data:
         if o == ROCK:
-            score += m
+            score_1 += m
             if m == ROCK:
-                score += DRAW
+                score_1 += DRAW
+                score_2 += 3
             elif m == PAPER:
-                score += WIN
+                score_1 += WIN
+                score_2 += (DRAW + 1)
             elif m == SCISSORS:
-                ...
+                score_2 += (WIN + 2)
         elif o == PAPER:
-            score += m
+            score_1 += m
             if m == ROCK:
-                ...
+                score_2 += 1
             elif m == PAPER:
-                score += DRAW
+                score_1 += DRAW
+                score_2 += (DRAW + 2)
             elif m == SCISSORS:
-                score += WIN
-
+                score_1 += WIN
+                score_2 += (WIN + 3)
         elif SCISSORS:
-            score += m
+            score_1 += m
             if m == ROCK:
-                score += WIN
+                score_1 += WIN
+                score_2 += 2
             elif m == PAPER:
-                ...
+                score_2 += (DRAW + 3)
             elif m == SCISSORS:
-                score += DRAW
-    return score
-
-
-def calc_score_part2(data: list[tuple[int, int]]) -> int:
-    score = 0
-    for o, m in data:
-        if o == ROCK:
-            if m == 1: # LOOSE
-                score += 3
-            elif m == 2: # DRAW
-                score += (3 + 1)
-            elif m == 3: # WIN
-                score += (6 + 2)
-        elif o == PAPER:
-            if m == 1:
-                score += 1
-            elif m == 2:
-                score += (3 + 2)
-            elif m == 3:  # WIN
-                score += (6 + 3)
-        elif o == SCISSORS:
-            if m == 1:
-                score += 2
-            elif m == 2:
-                score += (3 + 3)
-            elif m == 3:  # WIN
-                score += (6 + 1)
-
-    return score
+                score_1 += DRAW
+                score_2 += (WIN + 1)
+    return score_1, score_2
 
 
 def solution(data: list[str]) -> tuple[int, int]:
-    part1 = calc_score_part1(normalize_data(data))
-    part2 = calc_score_part2(normalize_data(data))
-    return part1, part2
+    return calc_scores(normalize_data(data))
 
 
 if __name__ == "__main__":
     part1, part2 = solution(get_data())
-    print("--- DAY 2 SOLUTIONS ")
+    print("--- DAY 2 SOLUTIONS ---")
     print(f"Part 1: {part1}")
     print(f"Part 2: {part2}")
 
