@@ -39,7 +39,7 @@ def solution(data: list[str]) -> tuple[int, int]:
 
 if __name__ == "__main__":
     part1, part2 = solution(get_data())
-    print("--- DAY 1 SOLUTIONS ")
+    print("--- DAY 1 SOLUTIONS ---")
     print(f"Part 1: {part1}")
     print(f"Part 2: {part2}")
 
